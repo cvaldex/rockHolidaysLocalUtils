@@ -5,13 +5,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class MusicbrainzJSONAPICaller {
-	public static String BASE_URL = "https://musicbrainz.org/ws/2/release-group?artist=$ARTIST_MBID&amp;limit=$LIMIT&amp;offset=$OFFSET&amp;fmt=json";
+public class MusicbrainzAPICaller {
+	public static String BASE_URL = "https://musicbrainz.org/ws/2/release-group?artist=$ARTIST_MBID&amp;limit=$LIMIT&amp;offset=$OFFSET&amp;fmt=$FORMAT";
 	private static int LIMIT = 100;
 	
-	public static String getReleaseJSON(String artistMBID , int page) throws IOException{
+	public static String getReleases(String artistMBID , int page , String format) throws IOException{
 		String tmpURL = BASE_URL.replaceAll("\\$ARTIST_MBID", artistMBID);
 		tmpURL = tmpURL.replaceAll("\\$LIMIT", String.valueOf(LIMIT));
+		tmpURL = tmpURL.replaceAll("\\$FORMAT", format);
 		
 		int offset = (page - 1) * 100;
 		tmpURL = tmpURL.replaceAll("\\$OFFSET", String.valueOf(offset));

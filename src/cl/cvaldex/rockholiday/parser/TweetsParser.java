@@ -2,6 +2,7 @@ package cl.cvaldex.rockholiday.parser;
 
 import com.google.api.services.sheets.v4.model.*;
 
+import cl.cvaldex.rockholiday.parser.googlesheets.BaseGoogleSheetsParser;
 import cl.cvaldex.rockholiday.vo.TweetVO;
 import com.google.api.services.sheets.v4.Sheets;
 

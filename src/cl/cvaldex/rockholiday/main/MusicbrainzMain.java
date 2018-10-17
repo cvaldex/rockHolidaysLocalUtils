@@ -10,21 +10,24 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Comparator;
 
-import cl.cvaldex.rockholiday.musicbrainz.MusicbrainzJSONAPICaller;
-import cl.cvaldex.rockholiday.parser.JSONParser;
+import cl.cvaldex.rockholiday.musicbrainz.MusicbrainzAPICaller;
+import cl.cvaldex.rockholiday.parser.musicbrainz.MusicBrainzParser;
+import cl.cvaldex.rockholiday.parser.musicbrainz.MusicBrainzParserFactory;
 import cl.cvaldex.rockholiday.vo.ReleaseVO;
 
 public class MusicbrainzMain {
-
+	private static String MUSICBRAINZ_API_FORMAT = "json";
 	public static void main(String[] args) throws IOException {
 		int page = 1;
 		String artistMBID = "66c662b6-6e2f-4930-8610-912e24c63ed1";
 		
 		String [] releaseTypeFilter = {"single" , "ep" , "other"}; //estas categorías no interesan
 		
-		String json = MusicbrainzJSONAPICaller.getReleaseJSON(artistMBID, page);
+		String json = MusicbrainzAPICaller.getReleases(artistMBID, page, MUSICBRAINZ_API_FORMAT);
 		
-		int releaseGroupCount = JSONParser.getReleaseGroupCount(json);
+		MusicBrainzParser parser = MusicBrainzParserFactory.getParser(MUSICBRAINZ_API_FORMAT);
+		
+		int releaseGroupCount = parser.getReleaseGroupCount(json);
 		int recordFetched = 0;
 		
 		System.out.println("Cantidad de Releases: " + releaseGroupCount);
@@ -33,11 +36,11 @@ public class MusicbrainzMain {
 		
 		do{
 			System.out.println("Page: " + page);
-			releases.addAll(JSONParser.parseReleaseJSON(json));
+			releases.addAll(parser.parseReleases(json));
 			recordFetched = releases.size();
 			
 			if(recordFetched < releaseGroupCount){
-				json = MusicbrainzJSONAPICaller.getReleaseJSON(artistMBID, ++page);
+				json = MusicbrainzAPICaller.getReleases(artistMBID, ++page, MUSICBRAINZ_API_FORMAT);
 			}
 			
 		}while(recordFetched < releaseGroupCount);

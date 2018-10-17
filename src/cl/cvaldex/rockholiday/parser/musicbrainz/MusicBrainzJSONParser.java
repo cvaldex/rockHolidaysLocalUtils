@@ -1,4 +1,4 @@
-package cl.cvaldex.rockholiday.parser;
+package cl.cvaldex.rockholiday.parser.musicbrainz;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,14 +10,14 @@ import com.google.gson.JsonParser;
 
 import cl.cvaldex.rockholiday.vo.ReleaseVO;
 
-public class JSONParser {
+public class MusicBrainzJSONParser implements MusicBrainzParser {
 	
 	/**
 	 * 
 	 * @param json texto con estructura JSON
 	 * @return
 	 */
-	public static Collection<ReleaseVO> parseReleaseJSON(String json){
+	public Collection<ReleaseVO> parseReleases(String json){
 		Collection<ReleaseVO> releases = new ArrayList<ReleaseVO>();
 		
 		JsonParser parser = new JsonParser();
@@ -48,7 +48,7 @@ public class JSONParser {
 		return releases;
 	}
 	
-	public static int getReleaseGroupCount(String json){
+	public int getReleaseGroupCount(String json){
 		JsonParser parser = new JsonParser();
 
 		JsonObject releaseGroup = parser.parse(json).getAsJsonObject();
