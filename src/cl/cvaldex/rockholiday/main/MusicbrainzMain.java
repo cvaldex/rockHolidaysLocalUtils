@@ -16,10 +16,11 @@ import cl.cvaldex.rockholiday.parser.musicbrainz.MusicBrainzParserFactory;
 import cl.cvaldex.rockholiday.vo.ReleaseVO;
 
 public class MusicbrainzMain {
-	private static String MUSICBRAINZ_API_FORMAT = "json";
+	private static String MUSICBRAINZ_API_FORMAT = "xml";
+	
 	public static void main(String[] args) throws IOException {
 		int page = 1;
-		String artistMBID = "66c662b6-6e2f-4930-8610-912e24c63ed1";
+		String artistMBID = "3798b104-01cb-484c-a3b0-56adc6399b80";
 		
 		String [] releaseTypeFilter = {"single" , "ep" , "other"}; //estas categorías no interesan
 		
@@ -53,11 +54,37 @@ public class MusicbrainzMain {
 		//filtrar Collection por fechas vacías
 		releases.removeIf(r -> r.getFirstReleaseDate().trim().length() == 0);
 		
+		if("xml".equalsIgnoreCase(MUSICBRAINZ_API_FORMAT)){ //en JSON no se pueden llenar estos campos
+			//filtrar Collection por igualdad de tipos
+			//System.out.println("Largo inicial: " + releases.size());
+			//releases.removeIf(r -> !(r.getPrimaryTypeId().equalsIgnoreCase(r.getTypeId())));
+			//releases.removeIf(r -> deleteReleaseByPrimaryAndSecondaryType(r));
+			//System.out.println("Largo final: " + releases.size());
+		}
+		
 		//ordenar por fecha de lanzamiento
 		Collections.sort((List<ReleaseVO>)releases, (new MusicbrainzMain()).new ReleaseDateComparator());
 		
+		//printSysOut(releases);
 		printFile(releases ,artistMBID);
 		
+	}
+	
+	public static boolean deleteReleaseByPrimaryAndSecondaryType(ReleaseVO release){
+		boolean delete = true;
+		
+		if(release.getPrimaryTypeId().equalsIgnoreCase(release.getTypeId())){
+			delete = false;
+		}
+		else{
+			if(release.getSecondaryTypeId().trim().length() > 0){
+				if(release.getSecondaryTypeId().equalsIgnoreCase(release.getTypeId())){
+					delete = false;
+				}
+			}
+		}
+		
+		return delete;
 	}
 	
 	public static void printFile(Collection<ReleaseVO> releases, String artistMBID) throws IOException{

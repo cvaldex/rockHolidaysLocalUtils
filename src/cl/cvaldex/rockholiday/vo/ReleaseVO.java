@@ -3,13 +3,13 @@ package cl.cvaldex.rockholiday.vo;
 public class ReleaseVO {
 	private String artist;
 	private String releaseName;
-	private String releaseType;
+	private String releaseType = "";
 	private String firstReleaseDate;
 	//filter
-	private String primaryTypeId;
-	private String typeId;
-	
-	
+	private String primaryTypeId = "";
+	private String typeId = "";
+	private String secondaryTypeId = "";
+		
 	public String getFirstReleaseDate() {
 		return firstReleaseDate;
 	}
@@ -43,6 +43,12 @@ public class ReleaseVO {
 		builder.append(releaseType);
 		builder.append(" - ");
 		builder.append(firstReleaseDate);
+		builder.append(" - ");
+		builder.append(primaryTypeId);
+		builder.append(" - ");
+		builder.append(typeId);
+		builder.append(" - ");
+		builder.append(secondaryTypeId);
 		
 		return builder.toString();
 	}
@@ -57,6 +63,12 @@ public class ReleaseVO {
 	}
 	public void setTypeId(String typeId) {
 		this.typeId = typeId;
+	}
+	public String getSecondaryTypeId() {
+		return secondaryTypeId;
+	}
+	public void setSecondaryTypeId(String secondaryTypeId) {
+		this.secondaryTypeId = secondaryTypeId;
 	}
 	
 }

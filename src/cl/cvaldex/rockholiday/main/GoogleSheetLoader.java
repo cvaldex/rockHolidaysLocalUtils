@@ -23,16 +23,19 @@ public class GoogleSheetLoader {
 	static final Logger logger = LogManager.getLogger(GoogleSheetLoader.class);
 	
 	public static void main(String[] args) throws Exception {
-		if(args.length < 5){
-			logger.error("Invalid args, must be 5: dbServerName dbServerPort dbName dbUserName dbPassword");
+		if(args.length < 6){
+			logger.error("Invalid args, must be 6: dbServerName dbServerPort dbName dbUserName dbPassword imageFolder");
 			System.exit(1);
 		}
+		
+		String imageFolder = args[5];
 		
 		TweetsParser gsParser = new TweetsParser();
 		
 		gsParser.setSecretsFilePath("/Users/cvaldesc/client_secret.json");
 		gsParser.setSheetID("1OjTsrhmYLJIb-scLJuMCGIZwVrsTAzRwbBLFDIjEoaE");
 		gsParser.setRange("Tweets!A1:I");
+		gsParser.setImageFolder(imageFolder);
 		
 		logger.info("Reading from Google Sheets Document");
 		Collection<TweetVO> tweets = gsParser.parse();
@@ -42,6 +45,7 @@ public class GoogleSheetLoader {
 		String dbName = args[2];
 		String dbUserName = args[3];
 		String dbPassword = args[4];
+		
 		
 		BaseDataSource ds = new PGSimpleDataSource();
 		

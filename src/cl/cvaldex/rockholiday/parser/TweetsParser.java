@@ -23,8 +23,10 @@ public class TweetsParser extends BaseGoogleSheetsParser{
     private static int IMAGE_PATH_3_INDEX = 6;
     private static int IMAGE_PATH_4_INDEX = 7;
     private static int LOAD_CONTROL_INDEX = 8;
+    
+    private String imageFolder = null;
 
-    public Collection<TweetVO> parse() throws Exception {
+	public Collection<TweetVO> parse() throws Exception {
     	if(secretsFilePath == null || secretsFilePath.trim().length() == 0){
     		throw new Exception("secretsFilePath cannot be null or empty");
     	}
@@ -73,11 +75,6 @@ public class TweetsParser extends BaseGoogleSheetsParser{
                     tweet.setImage3(getInputStream(row.get(IMAGE_PATH_3_INDEX).toString()));
                     tweet.setImage4(getInputStream(row.get(IMAGE_PATH_4_INDEX).toString()));
 
-                    //if (row.get(IMAGE_PATH_1_INDEX) != null && row.get(IMAGE_PATH_1_INDEX).toString().trim().length() > 0) tweet.setImage1(new FileInputStream(new File(row.get(IMAGE_PATH_1_INDEX).toString())));
-        			//if (row.get(IMAGE_PATH_2_INDEX) != null && row.get(IMAGE_PATH_2_INDEX).toString().trim().length() > 0) tweet.setImage2(new FileInputStream(new File(row.get(IMAGE_PATH_2_INDEX).toString())));
-        			//if (row.get(IMAGE_PATH_3_INDEX) != null && row.get(IMAGE_PATH_3_INDEX).toString().trim().length() > 0) tweet.setImage3(new FileInputStream(new File(row.get(IMAGE_PATH_3_INDEX).toString())));
-        			//if (row.get(IMAGE_PATH_4_INDEX) != null && row.get(IMAGE_PATH_4_INDEX).toString().trim().length() > 0) tweet.setImage4(new FileInputStream(new File(row.get(IMAGE_PATH_4_INDEX).toString())));
-
 	        		tweets.add(tweet);
         		}
         	}
@@ -88,8 +85,20 @@ public class TweetsParser extends BaseGoogleSheetsParser{
 
     public InputStream getInputStream(String filePath) throws FileNotFoundException{
         if(filePath == null || filePath.trim().length() == 0){
-            //filePath = DEFAULT_EMPTY_IMAGE;
         	return null;
+        }
+        
+        String filePathSeparator = File.separator;
+        
+        if(! filePath.startsWith(filePathSeparator)){
+        	StringBuilder builder = new StringBuilder();
+        	builder.append(imageFolder);
+        	
+        	if(! filePath.endsWith(filePathSeparator)){
+        		builder.append(filePathSeparator);
+        	}
+        	
+        	builder.append(filePath);
         }
 
         File tmpFile = new File(filePath);
@@ -99,4 +108,12 @@ public class TweetsParser extends BaseGoogleSheetsParser{
 
         return new FileInputStream(tmpFile);
     }
+    
+    public String getImageFolder() {
+		return imageFolder;
+	}
+
+	public void setImageFolder(String imageFolder) {
+		this.imageFolder = imageFolder;
+	}
 }
