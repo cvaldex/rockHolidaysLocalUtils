@@ -46,7 +46,6 @@ public class GoogleSheetLoader {
 		String dbUserName = args[3];
 		String dbPassword = args[4];
 		
-		
 		BaseDataSource ds = new PGSimpleDataSource();
 		
 		ds.setServerName(serverName);

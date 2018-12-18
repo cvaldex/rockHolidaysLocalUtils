@@ -99,6 +99,7 @@ public class TweetsParser extends BaseGoogleSheetsParser{
         	}
         	
         	builder.append(filePath);
+        	filePath = builder.toString();
         }
 
         File tmpFile = new File(filePath);

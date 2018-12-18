@@ -20,7 +20,7 @@ public class MusicbrainzMain {
 	
 	public static void main(String[] args) throws IOException {
 		int page = 1;
-		String artistMBID = "3798b104-01cb-484c-a3b0-56adc6399b80";
+		String artistMBID = "b669c53e-5a1f-4adc-80be-755e64e8115e";
 		
 		String [] releaseTypeFilter = {"single" , "ep" , "other"}; //estas categorías no interesan
 		
