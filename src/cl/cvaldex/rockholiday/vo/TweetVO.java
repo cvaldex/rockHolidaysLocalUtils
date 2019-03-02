@@ -11,6 +11,7 @@ public class TweetVO {
 	private InputStream image2;
 	private InputStream image3;
 	private InputStream image4;
+	private short priority;
 	
 	public String getText() {
 		return text;
@@ -64,6 +65,8 @@ public class TweetVO {
 		builder.append(author);
 		builder.append(" - ");
 		builder.append(text);
+		builder.append(" - ");
+		builder.append(priority);
 		
 		return builder.toString();
 	}
@@ -79,6 +82,12 @@ public class TweetVO {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public short getPriority() {
+		return priority;
+	}
+	public void setPriority(short priority) {
+		this.priority = priority;
 	}
 	
 }

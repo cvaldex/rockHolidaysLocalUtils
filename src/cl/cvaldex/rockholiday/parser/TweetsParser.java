@@ -22,7 +22,8 @@ public class TweetsParser extends BaseGoogleSheetsParser{
     private static int IMAGE_PATH_2_INDEX = 5;
     private static int IMAGE_PATH_3_INDEX = 6;
     private static int IMAGE_PATH_4_INDEX = 7;
-    private static int LOAD_CONTROL_INDEX = 8;
+    private static int PRIORITY_INDEX = 8;
+    private static int LOAD_CONTROL_INDEX = 9;
     
     private String imageFolder = null;
 
@@ -69,6 +70,7 @@ public class TweetsParser extends BaseGoogleSheetsParser{
         			tweet.setText(row.get(TEXT_INDEX).toString());
         			tweet.setDate(row.get(EVENT_DATE_INDEX).toString());
         			tweet.setAuthor(row.get(AUTHOR_INDEX).toString());
+        			tweet.setPriority(Short.parseShort(row.get(PRIORITY_INDEX).toString()));
 
                     tweet.setImage1(getInputStream(row.get(IMAGE_PATH_1_INDEX).toString()));
                     tweet.setImage2(getInputStream(row.get(IMAGE_PATH_2_INDEX).toString()));

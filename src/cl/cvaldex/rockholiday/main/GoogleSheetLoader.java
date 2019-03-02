@@ -34,7 +34,7 @@ public class GoogleSheetLoader {
 		
 		gsParser.setSecretsFilePath("/Users/cvaldesc/client_secret.json");
 		gsParser.setSheetID("1OjTsrhmYLJIb-scLJuMCGIZwVrsTAzRwbBLFDIjEoaE");
-		gsParser.setRange("Tweets!A1:I");
+		gsParser.setRange("Tweets!A1:J");
 		gsParser.setImageFolder(imageFolder);
 		
 		logger.info("Reading from Google Sheets Document");

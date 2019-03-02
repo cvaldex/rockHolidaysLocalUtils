@@ -38,24 +38,28 @@ public class InsertTweetsDAO {
 			
 			Iterator<TweetVO> i = tweets.iterator();
 			TweetVO tmpTweet = null;
+			int paramIndex = 1; 
 			
 			while(i.hasNext()){
 				tmpTweet = i.next();
+
 				insertTweetPS = conn.prepareStatement(assembleQuery() , Statement.RETURN_GENERATED_KEYS);
-
+				paramIndex = 1;
+				
 				//setear parámetros para la Query
-				insertTweetPS.setString(1, tmpTweet.getText());
-				insertTweetPS.setDate(2, java.sql.Date.valueOf(tmpTweet.getDate()));
-				insertTweetPS.setString(3, tmpTweet.getAuthor());
+				insertTweetPS.setString(paramIndex++, tmpTweet.getText());
+				insertTweetPS.setDate(paramIndex++, java.sql.Date.valueOf(tmpTweet.getDate()));
+				insertTweetPS.setString(paramIndex++, tmpTweet.getAuthor());
+				insertTweetPS.setShort(paramIndex++, tmpTweet.getPriority());
 
-				setImage(insertTweetPS, 4 , tmpTweet.getImage1());
-				setImage(insertTweetPS, 5 , tmpTweet.getImage2());
-				setImage(insertTweetPS, 6 , tmpTweet.getImage3());
-				setImage(insertTweetPS, 7 , tmpTweet.getImage4());
+				setImage(insertTweetPS, paramIndex++ , tmpTweet.getImage1());
+				setImage(insertTweetPS, paramIndex++ , tmpTweet.getImage2());
+				setImage(insertTweetPS, paramIndex++ , tmpTweet.getImage3());
+				setImage(insertTweetPS, paramIndex++ , tmpTweet.getImage4());
 	
 				insertTweetPS.execute();
 				
-				logger.info("Element " + counter++ + " successfully inserted. Key: " + getInsertedKey(insertTweetPS.getGeneratedKeys()) + " - " + tmpTweet.getText().substring(0, 50) + "...");
+				logger.info("Element " + counter++ + " successfully inserted. Key: " + getInsertedKey(insertTweetPS.getGeneratedKeys()) + " - " + getFormattedText(50 , tmpTweet.getText()) + "...");
 			}
 			
 			//cerrar elementos de colección a BD
@@ -66,11 +70,25 @@ public class InsertTweetsDAO {
 		}
 	}
 	
+	private String getFormattedText(int length , String text){
+		if(text.length() > length){
+			return text.substring(0, length);
+		}
+		
+		StringBuilder builder = new StringBuilder(text);
+		
+		while(builder.length() < length){
+			builder.append(" ");
+		}
+		
+		return builder.toString(); 
+	}
+	
 	private String assembleQuery(){
 		StringBuilder builder = new StringBuilder();
 		
-		builder.append("INSERT INTO public.tweets (tweet , eventdate , author , image1 , image2 , image3 , image4) ");
-		builder.append("VALUES (? , ? , ? , ? , ? , ? , ?) ");
+		builder.append("INSERT INTO public.tweets (tweet , eventdate , author , priority, image1 , image2 , image3 , image4) ");
+		builder.append("VALUES (? , ? , ? , ? , ? , ? , ? , ?) ");
 		
 		return builder.toString();
 	}
