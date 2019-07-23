@@ -2,6 +2,7 @@ package cl.cvaldex.rockholiday.parser;
 
 import com.google.api.services.sheets.v4.model.*;
 
+import cl.cvaldex.rockholiday.parser.exception.TweetAPIException;
 import cl.cvaldex.rockholiday.parser.googlesheets.BaseGoogleSheetsParser;
 import cl.cvaldex.rockholiday.vo.TweetVO;
 import com.google.api.services.sheets.v4.Sheets;
@@ -24,6 +25,8 @@ public class TweetsParser extends BaseGoogleSheetsParser{
     private static int IMAGE_PATH_4_INDEX = 7;
     private static int PRIORITY_INDEX = 8;
     private static int LOAD_CONTROL_INDEX = 9;
+    
+    private static int MAX_IMAGE_SIZE = 5 * 1000 * 1000; // maximo permitido por la API de Twitter
     
     private String imageFolder = null;
 
@@ -63,7 +66,7 @@ public class TweetsParser extends BaseGoogleSheetsParser{
         			loopIndex++;
         			continue;
         		}
-
+        		
         		if(! row.get(LOAD_CONTROL_INDEX).toString().equalsIgnoreCase("NO")){
         			tweet = new TweetVO();
 
@@ -107,6 +110,10 @@ public class TweetsParser extends BaseGoogleSheetsParser{
         File tmpFile = new File(filePath);
         if(! tmpFile.exists()){
             throw new FileNotFoundException("File " + filePath + " doesn't exists");
+        }
+        
+        if(tmpFile.length() > MAX_IMAGE_SIZE){
+        	throw new TweetAPIException("File " + filePath + " size exceeds Twitter API limits");
         }
 
         return new FileInputStream(tmpFile);
