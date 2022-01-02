@@ -26,3 +26,6 @@ hs_err_pid*
 
 # shell scripts
 *.sh
+
+#evitar subir properties propias del entorno local
+cvaldex.properties
